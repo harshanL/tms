@@ -72,21 +72,21 @@ has not implemented. Thus, any user with valid credentials will be able to brows
 all the APIs. 
 
 1. tms_web/coaches - Supports listing(GET) and creation(POST) of Coach entities.
-2. tms_web/coaches/<id> - Supports listing(GET), update(PUT), partial-update(PATCH) 
+2. tms_web/coaches/{coach-id} - Supports listing(GET), update(PUT), partial-update(PATCH) 
 and deletion(DELETE HTTP) of Coach entities.
 3. tms_web/players - Supports listing(GET) and creation(POST) of Player entities.
-4. tms_web/players/<id> - Supports listing(GET), update(PUT), partial-update(PATCH) 
+4. tms_web/players/{player-id} - Supports listing(GET), update(PUT), partial-update(PATCH) 
 and deletion(DELETE HTTP) of Player entities.
 5. tms_web/matches - Supports listing(GET) and creation(POST) of Match entities. 
 Listing will provide the following details of each match.
     - Match venue and schedule
     - Participating teams and their scores
     - Round (Qualifying, Quarter-Final, Semi-Final, Final)
-6. tms_web/matches/<id> - Supports deletion(DELETE) of Match entities.
-7. tms_web/matches/<id>/players - Supports listing(GET) and creation(POST) of MatchPlayer 
+6. tms_web/matches/{match-id} - Supports deletion(DELETE) of Match entities.
+7. tms_web/matches/{match-id}/players - Supports listing(GET) and creation(POST) of MatchPlayer 
 entities. This API can be used to create and list participating players of a given match-id.
 8. tms_web/teams - Supports listing(GET) and creation(POST) of Team entities.
-9. tms_web/teams/<id> - Supports listing(GET), update(PUT), partial-update(PATCH) 
+9. tms_web/teams/{team-id} - Supports listing(GET), update(PUT), partial-update(PATCH) 
 and deletion(DELETE HTTP) of Team entities.
-10. tms_web/teams/<id>/top-players - Lists(GET) Top players of a given team id.
-11. tms_web/teams/<id>/players - Lists(GET) players of a given team id.
+10. tms_web/teams/{team-id}/top-players - Lists(GET) Top players of a given team id.
+11. tms_web/teams/{team-id}/players - Lists(GET) players of a given team id.
