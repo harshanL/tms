@@ -5,14 +5,15 @@ This was developed using Python 3.8.5.
 ## Running the application
 
 1. Clone the repo
-2. Navigate to the clone repo directory and execute 
-'python manage.py migrate' command
-3. Create a super user using 'python manage.py createsuperuser' command only 
+2. Navigate to the clone repo directory and create a virtual env and activate it
+3. Execute 'pip install -r requirements.txt' command to install dependencies
+3. Execute 'python manage.py migrate' command to create database tables
+5. Create a super user using 'python manage.py createsuperuser' command only 
 if needs to login to the admin console
-4. Execute 'python manage.py generate_data' command to populate 
+6. Execute 'python manage.py generate_data' command to populate 
 database and users and groups
-5. Run the application using 'python manage.py runserver' command
-6. It is possible to run integration tests using 'python manage.py test' command
+7. Run the application using 'python manage.py runserver' command
+8. It is possible to run integration tests using 'python manage.py test' command
 
 ## Users
 
