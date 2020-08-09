@@ -1,3 +1,9 @@
+"""
+
+This module defines the model objects.
+
+"""
+
 from django.db import models
 
 """
@@ -6,7 +12,8 @@ Team model object defines a Basket ball team.
 
 
 class Team(models.Model):
-    name = models.CharField(max_length=100, primary_key=True)
+    id = models.BigAutoField(primary_key=True)
+    name = models.CharField(max_length=100)
     average_score = models.DecimalField(default=0, decimal_places=2, max_digits=4)
 
     def __str__(self):
@@ -42,7 +49,7 @@ class Player(models.Model):
 
     def __str__(self):
         return "{}, Team: {}, Height: {}, Avg Score: {}, Matches: {}" \
-            .format(self.name, self.team.name, self.height, self.average_score, self.no_of_match)
+            .format(self.name, self.team.name, self.height, self.average_score, self.matches)
 
 
 """
@@ -74,8 +81,8 @@ class Match(models.Model):
         choices=ROUND_CHOICES,
         default=QUALIFYING,
     )
-    team1 = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='team1_name')
-    team2 = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='team2_name')
+    team1 = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='match_team1_id')
+    team2 = models.ForeignKey(Team, on_delete=models.CASCADE, related_name='match_team2_id')
     team1_score = models.PositiveIntegerField(default=0)
     team2_score = models.PositiveIntegerField(default=0)
 

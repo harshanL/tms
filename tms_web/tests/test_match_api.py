@@ -5,6 +5,7 @@ from django.urls import reverse
 
 from tms_web.models import Match, Team, MatchTeam, Player, MatchPlayer
 import tms_web.constants as constants
+from tms_web.tests.test_team_api import TeamAPITest
 
 
 class MatchAPITest(APITestCase):
@@ -16,11 +17,45 @@ class MatchAPITest(APITestCase):
 
     @staticmethod
     def create_test_match():
-        return baker.make(Match, round=Match.QUALIFYING, team1_score=5, team2_score=3)
+        team1 = TeamAPITest.create_test_team()
+        team2 = TeamAPITest.create_test_team()
+        return baker.make(Match, round=Match.QUALIFYING, team1_score=5, team2_score=3, team1=team1, team2=team2)
 
     def setUp(self):
         self.user = User.objects.create_user(username='matific', email='matific@tms.com', password='pwd')
         self.client.force_login(user=self.user)
+
+    def assert_match_response(self, resp_data, match=None, data=None):
+        self.assertIsNotNone(resp_data)
+        self.assertIsNotNone(resp_data['id'])
+        self.assertIsNotNone(resp_data['scheduled_date'])
+        self.assertIsNotNone(resp_data['stadium'])
+        self.assertIsNotNone(resp_data['round'])
+        self.assertIsNotNone(resp_data['team1'])
+        self.assertIsNotNone(resp_data['team2'])
+        self.assertIsNotNone(resp_data['team1_score'])
+        self.assertIsNotNone(resp_data['team2_score'])
+        if data is not None:
+            self.assertEqual(resp_data['stadium'], data['stadium'])
+            self.assertEqual(resp_data['round'], data['round'])
+            self.assertEqual(resp_data['team1'], data['team1'])
+            self.assertEqual(resp_data['team2'], data['team2'])
+            self.assertEqual(resp_data['team1_score'], data['team1_score'])
+            self.assertEqual(resp_data['team2_score'], data['team2_score'])
+        else:
+            self.assertEqual(resp_data['id'], match.id)
+            self.assertEqual(resp_data['stadium'], match.stadium)
+            self.assertEqual(resp_data['round'], match.round)
+            self.assertEqual(resp_data['team1'], match.team1.id)
+            self.assertEqual(resp_data['team2'], match.team2.id)
+            self.assertEqual(resp_data['team1_score'], match.team1_score)
+            self.assertEqual(resp_data['team2_score'], match.team2_score)
+
+    def _get_match_data(self):
+        team1 = baker.make(Team, name='Brazil')
+        team2 = baker.make(Team, name='USA')
+        return {'scheduled_date': '2020-08-31', 'stadium': 'Dallas', 'round': Match.QUALIFYING, 'team1': team1.id,
+                'team2': team2.id, 'team1_score': 3, 'team2_score': 5}
 
     def test_match_get(self):
         match = MatchAPITest.create_test_match()
@@ -28,6 +63,7 @@ class MatchAPITest(APITestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertIsNotNone(resp.data)
         self.assertEqual(resp.data['id'], match.id)
+        self.assert_match_response(resp_data=resp.data, match=match)
 
     def test_match_get_without_auth(self):
         match = MatchAPITest.create_test_match()
@@ -42,26 +78,20 @@ class MatchAPITest(APITestCase):
         self.assertIsNotNone(resp.data)
         self.assertEqual(resp.data['count'], 1)
         self.assertIsNotNone(resp.data['results'])
-        self.assertIsNotNone(resp.data['results'][0])
-        self.assertEqual(resp.data['results'][0]['id'], match.id)
+        self.assert_match_response(resp_data=resp.data['results'][0], match=match)
 
     def test_get_match_list_without_auth(self):
         self.client.logout()
         resp = self.client.get(reverse(MatchAPITest._MATCHES_API_NAME))
         self.assertEqual(resp.status_code, 403)
 
-    def _get_match_data(self):
-        team1 = baker.make(Team, name='Brazil')
-        team2 = baker.make(Team, name='USA')
-        return {'scheduled_date': '2020-08-31', 'stadium': 'Dallas', 'round': Match.QUALIFYING, 'team1': team1.name,
-                'team2': team2.name}
-
     def test_match_create(self):
-        resp = self.client.post(reverse(MatchAPITest._MATCHES_API_NAME), data=self._get_match_data())
+        data = self._get_match_data()
+        resp = self.client.post(reverse(MatchAPITest._MATCHES_API_NAME), data=data)
         self.assertEqual(Match.objects.count(), 1)
         self.assertEqual(resp.status_code, 201)
+        self.assert_match_response(resp_data=resp.data, data=data)
         match_id = resp.data['id']
-        self.assertIsNotNone(resp.data)
         self.assertIsNotNone(match_id)
         self.assertEqual(len(MatchTeam.objects.all().filter(match=match_id)), 2)
 

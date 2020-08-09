@@ -14,10 +14,16 @@ permissions = permissions.IsAuthenticated
 
 
 class PlayerList(generics.ListCreateAPIView):
-    queryset = Player.objects.all()
+    """
+    Lists and creates **Player** resources.
+    """
+    queryset = Player.objects.all().order_by('id')
     serializer_class = PlayerSerializer
 
 
 class PlayerDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Player.objects.all()
+    """
+    Lists, updates (full and partial) and deletes a given **Player** resource.
+    """
+    queryset = Player.objects.all().order_by('id')
     serializer_class = PlayerSerializer

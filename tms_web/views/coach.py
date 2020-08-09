@@ -14,10 +14,16 @@ permissions = permissions.IsAuthenticated
 
 
 class CoachList(generics.ListCreateAPIView):
-    queryset = Coach.objects.all()
+    """
+    Lists and creates **Coach** resources.
+    """
+    queryset = Coach.objects.all().order_by('id')
     serializer_class = CoachSerializer
 
 
 class CoachDetail(generics.RetrieveUpdateDestroyAPIView):
+    """
+    Lists, updates (full and partial) and deletes a given **Coach** resource.
+    """
     queryset = Coach.objects.all()
     serializer_class = CoachSerializer

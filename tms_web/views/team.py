@@ -6,7 +6,6 @@ This module consists of REST API views of the Team model and the implementation 
 
 import numpy as np
 from django.db.models import Q
-from rest_framework import generics
 from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -19,22 +18,18 @@ import tms_web.constants as constants
 permissions = permissions.IsAuthenticated
 
 
-class TeamList(generics.ListCreateAPIView):
-    queryset = Team.objects.all()
-    serializer_class = TeamSerializer
-
-
-class TeamDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Team.objects.all()
-    serializer_class = TeamSerializer
-
-
 class TeamView(viewsets.ModelViewSet):
+    """
+    List, create, update (full and partial) and delete **Team** resources.
+    """
     _TOP_PLAYER_PERCENTILE = 90
 
     queryset = Team.objects.all().order_by('name')
     serializer_class = TeamSerializer
 
+    """
+    Lists top-players of a given **Team**.
+    """
     @action(methods=['get'], detail=True, url_path='top-players', url_name=constants.TOP_PLAYERS_URL_SUFFIX)
     def get_top_players(self, request, pk=None):
         self.get_object()
@@ -46,6 +41,9 @@ class TeamView(viewsets.ModelViewSet):
         serializer = PlayerSerializer(queryset, many=True)
         return Response(serializer.data)
 
+    """
+    Lists players of a given **Team**.
+    """
     @action(methods=['get'], detail=True, url_path='players', url_name=constants.TEAM_PLAYERS_URL_SUFFIX)
     def get_team_players(self, request, pk=None):
         self.get_object()

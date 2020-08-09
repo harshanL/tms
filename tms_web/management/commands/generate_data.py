@@ -4,18 +4,21 @@ Management command implementation to populate the database and create required u
 
 """
 
+import logging
 from decimal import Decimal
 from random import randrange
 
-from django.contrib.auth.models import Group, Permission, User
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Group, User
 from django.core.management.base import BaseCommand
 from django.db.models import Avg
 
 from tms_web.models import Player, Coach, Team, Match, MatchPlayer, MatchTeam
 
+logger = logging.getLogger('django.tms_web.GenerateDataLogger')
 GROUPS = ['league_admin', 'coach', 'player']
 MODELS = ['Team', 'Match', 'Player', 'Coach', 'Match Player', 'Match Team']
+LEAGUE_ADMIN_USER = 'eric_matific'
+DEFAULT_PASSWORD = 'pwd'
 
 
 class Command(BaseCommand):
@@ -24,7 +27,7 @@ class Command(BaseCommand):
     def create_groups_and_permissions(self):
         for g in GROUPS:
             Group.objects.get_or_create(name=g)
-        print('Successfully added groups')
+        logger.info('Successfully added groups')
 
     def generate_random_name(self):
         names = ['John', 'Ronaldo', 'Macy', 'Christine', 'Sam', 'Tom', 'Graham', 'Ramsy', 'Alex', 'Tim']
@@ -37,15 +40,15 @@ class Command(BaseCommand):
                           'Chile', 'Mexico', 'Korea', 'Singapore', 'England', 'Italy', 'Norway']
             team = Team(name=team_names[i], average_score=randrange(12))
             team.save()
-            Group.objects.get_or_create(name=team_names[i])
-        print('Successfully added 16 Teams and associated groups')
+            # Group.objects.get_or_create(name=team_names[i])
+        logger.info('Successfully added 16 Teams and associated groups')
 
     def generate_user(self, name, is_staff=False):
         user_name = name.replace(" ", "_")
         email = user_name + '@tms.com'
-        return User.objects.create_user(username=user_name, email=email, password='pwd', is_staff=is_staff)
+        return User.objects.create_user(username=user_name, email=email, password=DEFAULT_PASSWORD, is_staff=is_staff)
 
-    def generate_coach_data(self):
+    def generate_coach_data_and_users(self):
         teams = Team.objects.all()
         for t in list(teams):
             name = self.generate_random_name()
@@ -53,22 +56,22 @@ class Command(BaseCommand):
             coach.save()
             user = self.generate_user(name=name)
             coach_group = Group.objects.get(name=GROUPS[1])
-            team_group = Group.objects.get(name=t.name)
             coach_group.user_set.add(user)
-            team_group.user_set.add(user)
-        print('Successfully added 16 Coaches and associated users')
+            # team_group = Group.objects.get(name=t.name)
+            # team_group.user_set.add(user)
+        logger.info('Successfully added 16 Coaches and associated users')
 
-    def generate_player_data(self):
+    def generate_player_data_and_users(self):
         teams = Team.objects.all()
         for t in list(teams):
             for i in range(14):
                 name = self.generate_random_name()
                 player = Player(name=name, height=randrange(170, 200), average_score=randrange(6), team=t)
                 player.save()
-                # user = self.generate_user(name=name)
+                user = self.generate_user(name=name)
                 # player_group = Group.objects.get(name=GROUPS[2])
                 # player_group.user_set.add(user)
-        print('Successfully created players and associated users')
+        logger.info('Successfully created players and associated users')
 
     def generate_match_data(self):
         teams = Team.objects.all()
@@ -80,7 +83,7 @@ class Command(BaseCommand):
                           team1=teams[team_idx], team2=teams[team_idx + 1], team1_score=1, team2_score=3)
             match.save()
             match_team1 = MatchTeam(team=teams[team_idx], match=match, score=1)
-            match_team2 = MatchTeam(team=teams[team_idx+1], match=match, score=3)
+            match_team2 = MatchTeam(team=teams[team_idx + 1], match=match, score=3)
             match_team1.save()
             match_team2.save()
             team_idx = team_idx + 2
@@ -117,10 +120,17 @@ class Command(BaseCommand):
         match_team2 = MatchTeam(team=teams[15], match=match, score=7)
         match_team1.save()
         match_team2.save()
-        print('Successfully added matches')
+        logger.info('Successfully added matches')
 
     def get_player_average(self, player_id):
         score = MatchPlayer.objects.filter(player=player_id).aggregate(avg=Avg('score'))
+        if score['avg'] is not None:
+            return Decimal(score['avg'])
+        else:
+            return 0
+
+    def get_team_average(self, team_id):
+        score = MatchTeam.objects.filter(team=team_id).aggregate(avg=Avg('score'))
         if score['avg'] is not None:
             return Decimal(score['avg'])
         else:
@@ -137,7 +147,7 @@ class Command(BaseCommand):
                 m_player = MatchPlayer(player=team_players[i], match=matches[match_idx].match, score=randrange(2))
                 m_player.save()
             match_idx = match_idx + 1
-        # Update no of matches
+        # Update no of matches and average scores of players
         team_players = Player.objects.all()
         team_players = list(team_players)
         for p in team_players:
@@ -145,23 +155,34 @@ class Command(BaseCommand):
             p.average_score = self.get_player_average(p.id)
             p.save()
 
-        print('Successfully added players for matches')
+        logger.info('Successfully added players for matches')
+
+    def update_team_averages(self):
+        teams = Team.objects.all()
+        for t in list(teams):
+            t.average_score = self.get_team_average(team_id=t.id)
+            t.save()
+
+        logger.info('Successfully updated team averages')
 
     def handle(self, *args, **options):
+        logger.info("Executing the generate_data command to populate database, create groups and necessary roles")
         # Add user groups
         self.create_groups_and_permissions()
-        # Add league_admin user
-        user = self.generate_user(name="eric_matific", is_staff=True)
+        # create league_admin user and set league_admin role
+        user = self.generate_user(name=LEAGUE_ADMIN_USER, is_staff=True)
         admin_group = Group.objects.get(name=GROUPS[0])
         admin_group.user_set.add(user)
         # Add teams
         self.generate_team_data()
         # Add coaches
-        self.generate_coach_data()
+        self.generate_coach_data_and_users()
         # Add players
-        self.generate_player_data()
+        self.generate_player_data_and_users()
         # Add matches
         self.generate_match_data()
         # Add players to matches
         self.generate_match_players()
-        print('Dummy data insertion has successfully completed')
+        # Update team averages
+        self.update_team_averages()
+        logger.info('Dummy data insertion has successfully completed')
