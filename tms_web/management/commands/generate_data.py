@@ -5,6 +5,8 @@ Management command implementation to populate the database and create required u
 """
 
 import logging
+import random
+import string
 from decimal import Decimal
 from random import randrange
 
@@ -29,10 +31,14 @@ class Command(BaseCommand):
             Group.objects.get_or_create(name=g)
         logger.info('Successfully added groups')
 
+    def get_random_string(self):
+        letters = string.ascii_lowercase
+        return ''.join(random.choice(letters) for i in range(12))
+
     def generate_random_name(self):
         names = ['John', 'Ronaldo', 'Macy', 'Christine', 'Sam', 'Tom', 'Graham', 'Ramsy', 'Alex', 'Tim']
         surnames = ['Peterson', 'Bolton', 'James', 'Cook', 'Cruze', 'Bell', 'Molder', 'Johanson', 'Dennis', 'William']
-        return "{} {} {}".format(names[randrange(9)], surnames[randrange(9)], randrange(1, 99999))
+        return "{} {} {}".format(names[randrange(9)], surnames[randrange(9)], self.get_random_string())
 
     def generate_team_data(self):
         for i in range(16):
