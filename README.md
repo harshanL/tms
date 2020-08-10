@@ -11,7 +11,7 @@ This was developed using Python 3.8.5.
 5. Create a super user using 'python manage.py createsuperuser' command only 
 if needs to login to the admin console
 6. Execute 'python manage.py generate_data' command to populate 
-database and users and groups
+database and users and groups (league_admin, coach, player)
 7. Run the application using 'python manage.py runserver' command
 8. It is possible to run integration tests using 'python manage.py test' command
 
@@ -91,3 +91,14 @@ entities. This API can be used to create and list participating players of a giv
 and deletion(DELETE HTTP) of Team entities.
 10. tms_web/teams/{team-id}/top-players - Lists(GET) Top players of a given team id.
 11. tms_web/teams/{team-id}/players - Lists(GET) players of a given team id.
+
+## Further Improvements
+1. Incorporate a resource authorization mechanism along with a proper permission model by 
+assigning permissions to created roles and validating resource accesses against granted permissions
+2. Track the stats
+3. Additional business rule validations (ex: 10 players for a match from a team)
+4. Module breakdown : However, in Django REST framework, views can act as the business layer as well and I was 
+    unable to come up with a proper module breakdown for the business layer. Different people 
+    suggest different things (ie. add business logic to serializers, add logic to view, 
+    define separate service modules) and I couldn't figure out what's correct or wrong (probably 
+    because I'm new to Python and I'm not mush familiar with python best practises).
