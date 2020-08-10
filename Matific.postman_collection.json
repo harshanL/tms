@@ -1,0 +1,544 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Matific",
+		"_postman_id": "28bdec2c-79a6-3ee4-254a-a36cc3e24303",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Teams",
+			"description": "",
+			"item": [
+				{
+					"name": "List teams",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/teams/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get team",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/teams/1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Team players",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/teams/1/players",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Top players",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/teams/1/top-players",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add team",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/teams/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Sri Lanka\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete team",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/teams/18",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Matches",
+			"description": "",
+			"item": [
+				{
+					"name": "List matches",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/matches/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get match",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/matches/1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add match",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/matches/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"scheduled_date\": \"2020-01-22\",\n    \"stadium\": \"Rangers Stadium\",\n    \"round\": \"Qualifying Round\",\n    \"team1\": 1,\n    \"team2\": 2,\n    \"team1_score\": 1,\n    \"team2_score\": 3\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete match",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/matches/16",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "List match players",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/matches/1/players",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add match player",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/matches/1/players/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"player\": 1,\n        \"match\": 17,\n        \"score\": 1,\n        \"name\": \"Christine Molder oyirixmwacoj\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Players",
+			"description": "",
+			"item": [
+				{
+					"name": "List players",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/players/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get player",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/players/1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add player",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/players/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Christine Molders oyirixmwacoj\",\n    \"height\": \"182.00\",\n    \"team\": 1\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update player",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/players/225/",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": 225,\n    \"name\": \"Christine Molders oyirixmwacoj\",\n    \"height\": \"185.00\",\n    \"team\": 2\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Partial Update player",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/players/225/",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"height\": \"200.00\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete player",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/players/225/",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Coaches",
+			"description": "",
+			"item": [
+				{
+					"name": "List coaches",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/coaches/",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Get coach",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/coaches/1",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Add coach",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/coaches/",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Tom Cruzeee isvorxogvazv\",\n    \"team\": 20\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update coach",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/coaches/17/",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 17,\n    \"name\": \"Peter Cruzeee isvorxogvazv\",\n    \"team\": 20\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Partial Update coach",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/coaches/17/",
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Sam Cruzeee isvorxogvazv\"\n}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Delete coach",
+					"request": {
+						"url": "http://127.0.0.1:8000/tms_web/coaches/17/",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Basic ZXJpY19tYXRpZmljOnB3ZA==",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
